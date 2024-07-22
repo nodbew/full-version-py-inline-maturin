@@ -71,6 +71,3 @@ def test_build(cmd):
         assert [t.strip() for t in test_mod.split_string("Hello, world! I'm Macintosh.")] == ['Hello,', 'world!', "I'm", 'Macintosh.']
 
     return
-
-# Clean up
-rmtree('./pymodtest')
