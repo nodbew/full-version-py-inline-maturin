@@ -29,7 +29,7 @@ fn add_two(num: i64) -> i64 {
 }
 
 #[pymodule]
-fn test_mod(_py: Python, m: &PyModule) -> PyResult<()> {
+fn test_mod(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(add_two, m)?)?;
     Ok(())
 }
@@ -39,15 +39,16 @@ use pyo3::prelude::*;
 
 #[pyfunction]
 fn split_string(s: &str) -> Vec<&str> {
-    result = vec![];
+    let mut result = vec![];
     for part in s.split_whitespace() {
         result.push(part);
     }
+    result
 }
 
 #[pymodule]
-fn test_mod(_py: Python, m: &PyModule) -> PyResult<()> {
-    m.add_function(wrap_pyfunction!(add_two, m)?)?;
+fn test_mod(m: &Bound<'_, PyModule>) -> PyResult<()> {
+    m.add_function(wrap_pyfunction!(split_string, m)?)?;
     Ok(())
 }
     ''',),
