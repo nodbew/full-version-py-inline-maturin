@@ -1,8 +1,11 @@
-import pytest
-import py_inline_maturin
 import os
 from pathlib import Path
 from shutil import rmtree
+
+import toml
+import pytest
+
+import py_inline_maturin
 
 def test_creation():
     current_directory = os.getcwd()
@@ -18,7 +21,7 @@ def test_creation():
     return
 
 @pytest.mark.parametrize(('cmd',), [
-    '''
+    ('''
 mod pyo3;
 use pyo3::prelude::*;
 
@@ -32,8 +35,8 @@ fn test_mod(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(add_two, m)?)?;
     Ok(())
 }
-    ''',
-    '''
+    ''',),
+    ('''
 mod pyo3;
 use pyo3::prelude::*;
 
@@ -49,7 +52,7 @@ fn test_mod(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(add_two, m)?)?;
     Ok(())
 }
-    '''
+    ''',),
 ])
 def test_build(cmd):
     py_inline_maturin.create_maturin_project('pymodtest')
