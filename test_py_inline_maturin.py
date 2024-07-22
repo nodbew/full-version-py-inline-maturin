@@ -59,7 +59,7 @@ def test_build(cmd):
     try:
         assert test_mod.add_two(6) == 8
     except NameError:
-        assert type(test_mod.split_string("hello ") == list
+        assert type(test_mod.split_string("hello ")) == list
         assert [t.strip() for t in test_mod.split_string("Hello, world! I'm Macintosh.")] == ['Hello,', 'world!', "I'm", 'Macintosh.']
 
     # Clean up
