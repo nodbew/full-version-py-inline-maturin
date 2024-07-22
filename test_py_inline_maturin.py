@@ -20,7 +20,7 @@ def test_creation():
     return
 
 # Test function
-@pytest.mark.parametrize(('cmd',), [
+@pytest.mark.parametrize(('cmd','funcname'), [
     ('''
 use pyo3::prelude::*;
 
