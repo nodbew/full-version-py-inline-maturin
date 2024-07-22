@@ -19,9 +19,6 @@ def test_creation():
     
     return
 
-# Initialisation for the next test 
-py_inline_maturin.create_maturin_project('pymodtest')
-
 # Test function
 @pytest.mark.parametrize(('cmd',), [
     ('''
@@ -58,6 +55,10 @@ fn test_mod(m: &Bound<'_, PyModule>) -> PyResult<()> {
     ''',),
 ])
 def test_build(cmd):
+    
+    if not Path('./pymodtest').is_dir():
+        # Initialisation for the next test 
+        py_inline_maturin.create_maturin_project('pymodtest')
     
     with open('./pymodtest/src/lib.rs', 'w', encoding = 'utf-8') as f:
         f.write(cmd)
