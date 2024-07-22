@@ -63,11 +63,11 @@ def test_build(cmd):
     with open('./pymodtest/src/lib.rs', 'w', encoding = 'utf-8') as f:
         f.write(cmd)
     py_inline_maturin.build_maturin_project('pymodtest')
-    import test_mod
+    import pymodtest
     try:
-        assert test_mod.add_two(6) == 8
+        assert pymodtest.add_two(6) == 8
     except NameError:
-        assert type(test_mod.split_string("hello ")) == list
-        assert [t.strip() for t in test_mod.split_string("Hello, world! I'm Macintosh.")] == ['Hello,', 'world!', "I'm", 'Macintosh.']
+        assert type(pymodtest.split_string("hello ")) == list
+        assert [t.strip() for t in pymodtest.split_string("Hello, world! I'm Macintosh.")] == ['Hello,', 'world!', "I'm", 'Macintosh.']
 
     return
