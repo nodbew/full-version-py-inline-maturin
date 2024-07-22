@@ -21,7 +21,6 @@ def test_creation():
 
 @pytest.mark.parametrize(('cmd',), [
     ('''
-mod pyo3;
 use pyo3::prelude::*;
 
 #[pyfunction]
@@ -36,7 +35,6 @@ fn test_mod(_py: Python, m: &PyModule) -> PyResult<()> {
 }
     ''',),
     ('''
-mod pyo3;
 use pyo3::prelude::*;
 
 #[pyfunction]
