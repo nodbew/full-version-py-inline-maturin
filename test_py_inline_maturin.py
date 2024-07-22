@@ -19,6 +19,10 @@ def test_creation():
     
     return
 
+# Initialisation for the next test 
+py_inline_maturin.create_maturin_project('pymodtest')
+
+# Test function
 @pytest.mark.parametrize(('cmd',), [
     ('''
 use pyo3::prelude::*;
@@ -55,15 +59,6 @@ fn test_mod(m: &Bound<'_, PyModule>) -> PyResult<()> {
 ])
 def test_build(cmd):
     
-    if Path('./pymodtest').is_dir():
-        import warnings
-        import subprocess
-        warnings.warn("Found pymondtest. Here is the tree of the directory:\n")
-        subprocess.run(r'find . | sed -e "s/[^-][^\/]*\// |/g" -e "s/|\([^ ]\)/|-\1/"', shell=True, check=True)
-        subprocess.run("bash stdout_and_stderr.sh > stderr.log")
-        rmtree('./pymodtest')
-
-    py_inline_maturin.create_maturin_project('pymodtest')
     with open('./pymodtest/src/lib.rs', 'w', encoding = 'utf-8') as f:
         f.write(cmd)
     py_inline_maturin.build_maturin_project('pymodtest')
@@ -74,7 +69,7 @@ def test_build(cmd):
         assert type(test_mod.split_string("hello ")) == list
         assert [t.strip() for t in test_mod.split_string("Hello, world! I'm Macintosh.")] == ['Hello,', 'world!', "I'm", 'Macintosh.']
 
-    # Clean up
-    rmtree('./pymodtest')
-    
     return
+
+# Clean up
+rmtree('./pymodtest')
