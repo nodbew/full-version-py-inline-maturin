@@ -30,7 +30,7 @@ fn add_two(num: i64) -> i64 {
 }
 
 #[pymodule]
-fn test_mod(m: &Bound<'_, PyModule>) -> PyResult<()> {
+fn pymodtest(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(add_two, m)?)?;
     Ok(())
 }
@@ -48,7 +48,7 @@ fn split_string(s: &str) -> Vec<&str> {
 }
 
 #[pymodule]
-fn test_mod(m: &Bound<'_, PyModule>) -> PyResult<()> {
+fn pymodtest(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(split_string, m)?)?;
     Ok(())
 }
