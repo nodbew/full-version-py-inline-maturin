@@ -43,6 +43,7 @@ fn split_string(s: &str) -> Vec<&str> {
     for part in s.split_whitespace() {
         result.push(part);
     }
+}
 
 #[pymodule]
 fn test_mod(_py: Python, m: &PyModule) -> PyResult<()> {
