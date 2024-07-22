@@ -34,7 +34,7 @@ fn pymodtest(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(add_two, m)?)?;
     Ok(())
 }
-    ''',),
+    ''','add_two'),
     ('''
 use pyo3::prelude::*;
 
@@ -52,22 +52,23 @@ fn pymodtest(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(split_string, m)?)?;
     Ok(())
 }
-    ''',),
+    ''','split_string'),
 ])
-def test_build(cmd):
+def test_build(cmd, funcname):
     
     if not Path('./pymodtest').is_dir():
-        # Initialisation for the next test 
+        # Initialization for the next test 
         py_inline_maturin.create_maturin_project('pymodtest')
     
     with open('./pymodtest/src/lib.rs', 'w', encoding = 'utf-8') as f:
         f.write(cmd)
     py_inline_maturin.build_maturin_project('pymodtest')
     import pymodtest
-    try:
-        assert pymodtest.add_two(6) == 8
-    except NameError:
-        assert type(pymodtest.split_string("hello ")) == list
-        assert [t.strip() for t in pymodtest.split_string("Hello, world! I'm Macintosh.")] == ['Hello,', 'world!', "I'm", 'Macintosh.']
+    match funcname:
+        case 'add_two':
+            assert pymodtest.add_two(6) == 8
+        case 'split_string':
+            assert type(pymodtest.split_string("hello ")) == list
+            assert [t.strip() for t in pymodtest.split_string("Hello, world! I'm Macintosh.")] == ['Hello,', 'world!', "I'm", 'Macintosh.']
 
     return
