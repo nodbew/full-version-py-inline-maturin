@@ -2,7 +2,6 @@ import os
 from pathlib import Path
 from shutil import rmtree
 
-import toml
 import pytest
 
 import py_inline_maturin
