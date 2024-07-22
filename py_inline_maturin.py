@@ -1,7 +1,9 @@
 import subprocess
-from subprocess import run
 from pathlib import Path
 import os
+
+def run(cmd: str, **kwargs) -> subprocess.CompletedProcess:
+    return subprocess.run(cmd, shell = True, check = True, **kwargs)
 
 def create_maturin_project(name: str) -> None:
     '''
@@ -16,17 +18,17 @@ def create_maturin_project(name: str) -> None:
         raise FileExistsError(f"Directory {name} already exists; please choose another name")
 
     # Install rust and maturin
-    run("curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y", shell = True)
+    run("curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y")
     print('Successfully installed rust:')
     run("rustup --version")
-    run("pip install -U maturin", shell = True)
+    run("pip install -U maturin")
 
     # Create directory
     Path('./' + name).mkdir(parents = True, exist_ok = True)
     os.chdir('./' + name)
 
     # Maturin new
-    run(f"maturin new --name {name} --bindings pyo3 .", shell = True)
+    run(f"maturin new --name {name} --bindings pyo3 .")
     os.chdir('..')
     
     return 
