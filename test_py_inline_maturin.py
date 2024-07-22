@@ -39,7 +39,7 @@ fn split_string(s: &str) -> Vec<&str> {
 }
 
 #[pymodule]
-fn pymodtest(py: Python<'_>, m: &Bound<'_, PyModule>) -> PyResult<()> {
+fn pymodtest(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(add_two, m)?)?;
     m.add_function(wrap_pyfunction!(split_string, m)?)?;
     Ok(())
@@ -54,6 +54,8 @@ fn pymodtest(py: Python<'_>, m: &Bound<'_, PyModule>) -> PyResult<()> {
         
     py_inline_maturin.build_maturin_project('pymodtest')
     import pymodtest
+    
+    print(dir(pymodtest))
     
     assert pymodtest.add_two(6) == 8
     assert type(pymodtest.split_string("hello ")) == list
