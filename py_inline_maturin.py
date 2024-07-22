@@ -23,13 +23,8 @@ def create_maturin_project(name: str) -> None:
     run("rustup --version")
     run("pip install -U maturin")
 
-    # Create directory
-    Path('./' + name).mkdir(parents = True, exist_ok = True)
-    os.chdir('./' + name)
-
     # Maturin new
-    run(f"maturin new --name {name} --bindings pyo3 .")
-    os.chdir('..')
+    run(f"maturin new --name {name} --bindings pyo3 ./{name}")
     
     return 
 
