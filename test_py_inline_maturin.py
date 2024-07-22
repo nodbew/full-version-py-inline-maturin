@@ -59,7 +59,7 @@ def test_build(cmd):
         import warnings
         import subprocess
         warnings.warn("Found pymondtest. Here is the tree of the directory:\n")
-        subprocess.run(r'find . | sed -e "s/[^-][^\/]*\// |/g" -e "s/|\([^ ]\)/|-\1/', shell=True, check=True)
+        subprocess.run(r'find . | sed -e "s/[^-][^\/]*\// |/g" -e "s/|\([^ ]\)/|-\1/"', shell=True, check=True)
         subprocess.run("bash stdout_and_stderr.sh > stderr.log")
         rmtree('./pymodtest')
 
