@@ -1,5 +1,5 @@
 import pytest
-from . import py_inline_maturin
+import py_inline_maturin
 import os
 from pathlib import Path
 from shutil import rmtree
