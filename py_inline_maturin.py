@@ -33,7 +33,7 @@ def initialize_maturin_project(name: str) -> None:
         raise FileNotFoundError("The directory does not exist")
     
     os.chdir("./" + name)
-    run("maturin init --verbose")
+    run("maturin init --bindings pyo3")
     os.chdir("..")
     return
 
