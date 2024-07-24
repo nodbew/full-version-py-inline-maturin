@@ -38,7 +38,7 @@ def build_maturin_project(path: str|Path) -> None:
 
     # Develop
     os.chdir('./' + str(path))
-    run("maturin develop")
+    run("maturin develop --verbose")
     os.chdir('..')
 
     return 
