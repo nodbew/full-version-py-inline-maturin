@@ -27,10 +27,8 @@ def test_build():
     py_inline_maturin.build_maturin_project('pymodtest')
     import pymodtest
     
-    import subprocess
-    subprocess.run("sudo apt-get install tree", shell = True, check = True)
-    subprocess.run("tree ./pymodtest", shell = True, check = True)
-    raise Exception()
+    with open("./pymodtest/maturin/libpymodtest.so") as f:
+    print(f.read())
     
     assert pymodtest.add_two(6) == 8
     assert type(pymodtest.split_string("hello ")) == list
