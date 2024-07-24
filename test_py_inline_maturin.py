@@ -45,9 +45,8 @@ fn pymodtest(m: &Bound<'_, PyModule>) -> PyResult<()> {
     Ok(())
 }
 '''
-    if not Path('./pymodtest').is_dir():
-        # Initialization of the working dir
-        py_inline_maturin.create_maturin_project('pymodtest')
+    # Initialization of the working dir
+    py_inline_maturin.create_maturin_project('pymodtest')
     
     with open('./pymodtest/src/lib.rs', 'w', encoding = 'utf-8') as f:
         f.write(cmd)
@@ -60,5 +59,7 @@ fn pymodtest(m: &Bound<'_, PyModule>) -> PyResult<()> {
     assert pymodtest.add_two(6) == 8
     assert type(pymodtest.split_string("hello ")) == list
     assert [t.strip() for t in pymodtest.split_string("Hello, world! I'm Macintosh.")] == ['Hello,', 'world!', "I'm", 'Macintosh.']
+    
+    rmtree("./pymodtest")
 
     return
