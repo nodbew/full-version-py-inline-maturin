@@ -38,7 +38,6 @@ def build_maturin_project(path: str|Path) -> None:
 
     # Develop
     os.chdir('./' + str(path))
-    run("../venv/bin/activate")
     run("maturin develop")
     os.chdir('..')
 
