@@ -31,7 +31,7 @@ def test_build():
     
     msg = f"cd: {os.getcwd()}\nattrs: {dir(pymodtest)}\n"
     for attr in dir(pymodtest):
-        msg += f"{attr}: {pymodtest.__getattr__(attr)}\n"
+        msg += f"{attr}: {getattr(pymodtest, attr)}\n"
     try:
         msg += "dict: " + str(pymodtest.__dict__) + "\n"
     except Exception:
