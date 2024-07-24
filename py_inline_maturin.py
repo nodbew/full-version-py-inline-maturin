@@ -27,6 +27,15 @@ def create_maturin_project(name: str) -> None:
     run(f"maturin new --name {name} --bindings pyo3 ./{name}")
     
     return 
+    
+def initialize_maturin_project(name: str) -> None:
+    if not Path("./" + name).is_dir():
+        raise FileNotFoundError("The directory does not exist")
+    
+    os.chdir("./" + name)
+    run("maturin init")
+    os.chdir("..")
+    return
 
 def build_maturin_project(path: str|Path) -> None:
     if not isinstance(path, (str, path)):
