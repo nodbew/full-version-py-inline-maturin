@@ -28,7 +28,7 @@ def test_build():
     import pymodtest
     
     with open("./pymodtest/maturin/libpymodtest.so") as f:
-    print(f.read())
+        print(f.read())
     
     assert pymodtest.add_two(6) == 8
     assert type(pymodtest.split_string("hello ")) == list
