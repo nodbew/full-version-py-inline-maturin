@@ -23,8 +23,6 @@ def test_creation():
 def test_build():
     # Initialization of the working dir
     py_inline_maturin.initialize_maturin_project('pymodtest')
-
-    with open("./pymodtest/__init__.py", "w", encoding = "utf-8") as f:pass
         
     py_inline_maturin.build_maturin_project('pymodtest')
     import pymodtest
