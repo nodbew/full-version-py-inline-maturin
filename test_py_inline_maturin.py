@@ -29,6 +29,16 @@ def test_build():
     py_inline_maturin.build_maturin_project('pymodtest')
     import pymodtest
     
+    msg = f"cd: {os.getcwd()}\nattrs: {dir(pymodtest)}\n"
+    for attr in dir(pymodtest):
+        msg += f"{attr}: {__getattr__(pymodtest, attr)}\n"
+    try:
+        msg += "dict: " + str(pymodtest.__dict__) + "\n"
+    except Exception:
+        pass
+        
+    raise Exception(msg)
+    
     assert pymodtest.add_two(6) == 8
     assert type(pymodtest.split_string("hello ")) == list
     assert [t.strip() for t in pymodtest.split_string("Hello, world! I'm Macintosh.")] == ['Hello,', 'world!', "I'm", 'Macintosh.']
