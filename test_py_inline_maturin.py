@@ -27,8 +27,8 @@ def test_build():
     py_inline_maturin.build_maturin_project('pymodtest')
     import pymodtest
     
-    with open("./pymodtest/target/debug/maturin/libpymodtest.so") as f:
-        print(f.read())
+    from subprocess import run
+    run("nm -D -l ./pymodtest/target/debug/maturin/libpymodtest.so", shell = True, check = True)
     
     assert pymodtest.add_two(6) == 8
     assert type(pymodtest.split_string("hello ")) == list
