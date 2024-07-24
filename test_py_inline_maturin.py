@@ -27,7 +27,7 @@ def test_build():
     py_inline_maturin.build_maturin_project('pymodtest')
     import pymodtest
     
-    with open("./pymodtest/maturin/libpymodtest.so") as f:
+    with open("./pymodtest/target/debug/maturin/libpymodtest.so") as f:
         print(f.read())
     
     assert pymodtest.add_two(6) == 8
