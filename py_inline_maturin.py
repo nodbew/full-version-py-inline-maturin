@@ -3,7 +3,7 @@ from pathlib import Path
 import os
 
 def run(cmd: str, **kwargs) -> subprocess.CompletedProcess:
-    return subprocess.run(cmd, shell = True, check = True, **kwargs)
+    return subprocess.run(cmd.split(), check = True, **kwargs)
 
 def create_maturin_project(name: str) -> None:
     '''
