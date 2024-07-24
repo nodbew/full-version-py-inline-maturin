@@ -25,15 +25,15 @@ def test_build():
     py_inline_maturin.initialize_maturin_project('pymodtest')
         
     py_inline_maturin.build_maturin_project('pymodtest')
+    
+    cwd = os.getcwd()
+    os.chdir("./pymodtest/target/debug/maturin")
     import pymodtest
-    
-    from subprocess import run
-    run("nm -D -l ./pymodtest/target/debug/maturin/libpymodtest.so", shell = True, check = True)
-    
     assert pymodtest.add_two(6) == 8
     assert type(pymodtest.split_string("hello ")) == list
     assert [t.strip() for t in pymodtest.split_string("Hello, world! I'm Macintosh.")] == ['Hello,', 'world!', "I'm", 'Macintosh.']
     
+    os.chdir(cwd)
     rmtree("./pymodtest")
 
     return
