@@ -38,7 +38,7 @@ def build_maturin_project(path: str|Path) -> None:
 
     # Develop
     os.chdir('./' + str(path))
-    run("maturin build")
+    run("maturin develop")
     os.chdir('..')
 
     return 
