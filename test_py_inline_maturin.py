@@ -52,10 +52,10 @@ fn pymodtest(m: &Bound<'_, PyModule>) -> PyResult<()> {
     with open('./pymodtest/src/lib.rs', 'w', encoding = 'utf-8') as f:
         f.write(cmd)
         
+    with open("./pymodtest/__init__.py", "w", encoding = "utf-8") as f:pass
+        
     py_inline_maturin.build_maturin_project('pymodtest')
     import pymodtest
-    
-    print(dir(pymodtest))
     
     assert pymodtest.add_two(6) == 8
     assert type(pymodtest.split_string("hello ")) == list
