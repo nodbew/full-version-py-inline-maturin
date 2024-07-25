@@ -26,7 +26,7 @@ def test_build():
         
     py_inline_maturin.build_maturin_project('pymodtest')
 
-    with open("./pymodtest/Cargo.toml") as f:
+    with open("./pymodtest/pyproject.toml") as f:
         print(f.read())
     
     import pymodtest
