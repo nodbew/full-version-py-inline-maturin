@@ -1,4 +1,5 @@
 use pyo3::prelude::*;
+use pyo3::wrap_pyfunction;
 
 #[pyfunction]
 pub fn add_two(num: i64) -> i64 {
@@ -6,16 +7,12 @@ pub fn add_two(num: i64) -> i64 {
 }
 
 #[pyfunction]
-pub fn split_string(s: &str) -> Vec<&str> {
-    let mut result = vec![];
-    for part in s.split_whitespace() {
-        result.push(part);
-    }
-    result
+pub fn split_string(s: &str) -> Vec<String> {
+    s.split_whitespace().map(|part| part.to_string()).collect()
 }
 
 #[pymodule]
-pub fn pymodtest(m: &Bound<'_, PyModule>) -> PyResult<()> {
+fn pymodtest(py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(add_two, m)?)?;
     m.add_function(wrap_pyfunction!(split_string, m)?)?;
     Ok(())
