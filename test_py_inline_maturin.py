@@ -29,14 +29,10 @@ def test_build():
     with open("./pymodtest/src/lib.rs") as f:
         print(f.read())
     
-    cwd = os.getcwd()
-    os.chdir("./pymodtest/target/debug/maturin")
     import pymodtest
     assert pymodtest.add_two(6) == 8
     assert type(pymodtest.split_string("hello ")) == list
     assert [t.strip() for t in pymodtest.split_string("Hello, world! I'm Macintosh.")] == ['Hello,', 'world!', "I'm", 'Macintosh.']
-    
-    os.chdir(cwd)
     rmtree("./pymodtest")
 
     return
