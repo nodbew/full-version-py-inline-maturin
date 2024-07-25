@@ -25,6 +25,9 @@ def test_build():
     py_inline_maturin.initialize_maturin_project('pymodtest')
         
     py_inline_maturin.build_maturin_project('pymodtest')
+
+    with open("./pymodtest/src/lib.rs") as f:
+        print(f.read())
     
     cwd = os.getcwd()
     os.chdir("./pymodtest/target/debug/maturin")
