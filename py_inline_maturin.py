@@ -108,7 +108,7 @@ def build_maturin_project(path: str|Path) -> None:
 
     # Develop
     os.chdir('./' + str(path))
-    run("python -m virtualenv venv | . .venv/bin/activate | maturin develop --verbose")
+    run("virtualenv -p python3.12 venv | . venv/bin/activate | maturin develop --verbose")
     os.chdir('..')
 
     return 
