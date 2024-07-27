@@ -112,6 +112,7 @@ def build_maturin_project(path: str|Path) -> None:
     
     # Develop
     os.chdir('./' + str(path))
+    run("VIRTUAL_ENV = ../venv")
     run("maturin develop --verbose")
     os.chdir('..')
 
