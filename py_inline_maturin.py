@@ -108,8 +108,7 @@ def build_maturin_project(path: str|Path) -> None:
 
     # Virtual env
     run("virtualenv venv")
-    run("sudo apt install tree | tree .")
-    run(". .venv/bin/activate")
+    run(". ./venv/bin/activate")
     
     # Develop
     os.chdir('./' + str(path))
