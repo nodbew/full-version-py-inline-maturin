@@ -107,7 +107,7 @@ def build_maturin_project(path: str|Path) -> None:
         raise FileNotFoundError(f"There is no directory named {path}")
 
     # Virtual env
-    run("virtualenv -p python3.12 venv | . ./venv/bin/activate")
+    run("virtualenv -p python3.12 venv | . .venv/bin/activate")
     
     # Develop
     os.chdir('./' + str(path))
