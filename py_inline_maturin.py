@@ -106,14 +106,9 @@ def build_maturin_project(path: str|Path) -> None:
     if not Path('./' + str(path)).is_dir():
         raise FileNotFoundError(f"There is no directory named {path}")
 
-    # Virtual env
-    run("virtualenv venv")
-    run(". ./venv/bin/activate")
-    
     # Develop
     os.chdir('./' + str(path))
-    run('export VIRTUAL_ENV="../venv"')
-    run("maturin develop --verbose")
+    run(f"maturin build --verbose | pip install ./target/debug/maturin/{name}.whl")
     os.chdir('..')
 
     return 
