@@ -22,8 +22,8 @@ def test_creation():
 # Test function
 def test_build():
     # Initialization of the working dir
-    py_inline_maturin.initialize_maturin_project('pymodtest')
-    py_inline_maturin.build_maturin_project('pymodtest')
+    py_inline_maturin.initialize_maturin_project('maturin_test/pymodtest')
+    py_inline_maturin.build_maturin_project('maturin_test/pymodtest')
     
     from . import pymodtest
     assert pymodtest.add_two(6) == 8
