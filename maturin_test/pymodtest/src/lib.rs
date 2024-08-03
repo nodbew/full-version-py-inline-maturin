@@ -13,7 +13,7 @@ pub fn split_string(s: &str) -> Vec<String> {
 
 #[pymodule]
 #[pyo3(name="pymodtest")]
-fn pymodtest(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
+fn pymodtest(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(add_two, m)?)?;
     m.add_function(wrap_pyfunction!(split_string, m)?)?;
     Ok(())
