@@ -109,7 +109,7 @@ def build_maturin_project(name: str) -> None:
     # Develop
     os.chdir('./' + str(name))
     run("maturin build --verbose")
-    for p in Path("./target/wheels"):
+    for p in Path("./target/wheels").iterdir():
         run(f"pip install {p}")
     os.chdir('..')
 
