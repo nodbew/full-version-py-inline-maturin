@@ -98,16 +98,16 @@ name = {name}
 
     return
 
-def build_maturin_project(path: str|Path) -> None:
-    if not isinstance(path, (str, path)):
-        raise TypeError(f'The "path" argument must be a str or pathlib.Path object, not {type(path)}')
+def build_maturin_project(name: str) -> None:
+    if not isinstance(name, str):
+        raise TypeError(f'The "name" argument must be a str, not {type(name)}')
 
     # Search for the directory under the current directory
-    if not Path('./' + str(path)).is_dir():
-        raise FileNotFoundError(f"There is no directory named {path}")
+    if not Path('./' + str(name)).is_dir():
+        raise FileNotFoundError(f"There is no directory named {name}")
 
     # Develop
-    os.chdir('./' + str(path))
+    os.chdir('./' + str(name))
     run(f"maturin build --verbose | pip install ./target/debug/maturin/{name}.whl")
     os.chdir('..')
 
