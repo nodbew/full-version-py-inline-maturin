@@ -109,8 +109,8 @@ def build_maturin_project(name: str) -> None:
     # Develop
     os.chdir('./' + str(name))
     run("maturin build --verbose")
-    run("sudo apt install tree | tree .")
-    run(f"pip install ./target/debug/maturin/{name}.whl")
+    for p in Path("./target/wheels"):
+        run(f"pip install {p}")
     os.chdir('..')
 
     return 
