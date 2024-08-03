@@ -105,10 +105,12 @@ def build_maturin_project(name: str) -> None:
     # Search for the directory under the current directory
     if not Path('./' + str(name)).is_dir():
         raise FileNotFoundError(f"There is no directory named {name}")
-
+    
     # Develop
     os.chdir('./' + str(name))
-    run(f"maturin build --verbose | pip install ./target/debug/maturin/{name}.whl")
+    run("maturin build --verbose")
+    run("sudo apt install tree | tree .")
+    run(f"pip install ./target/debug/maturin/{name}.whl")
     os.chdir('..')
 
     return 
