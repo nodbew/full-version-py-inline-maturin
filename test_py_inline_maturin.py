@@ -25,7 +25,7 @@ def test_build():
     py_inline_maturin.initialize_maturin_project('pymodtest')
     py_inline_maturin.build_maturin_project('pymodtest')
     
-    import .pymodtest
+    from . import pymodtest
     assert pymodtest.add_two(6) == 8
     assert type(pymodtest.split_string("hello ")) == list
     assert [t.strip() for t in pymodtest.split_string("Hello, world! I'm Macintosh.")] == ['Hello,', 'world!', "I'm", 'Macintosh.']
