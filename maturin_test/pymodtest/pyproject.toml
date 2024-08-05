@@ -12,3 +12,7 @@ classifiers = [
 ]
 dynamic = ["version"]
 features = ["pyo3/extension-module"]
+
+[tool.maturin]
+python-source = "python"
+module-name = "pymodtest"
