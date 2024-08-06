@@ -3,6 +3,8 @@ use pyo3::prelude::*;
 #[pymodule]
 mod pymodtest {
     
+    use pyo3::prelude::*;
+    
     #[pyfunction]
     fn add_two(num: i64) -> i64 {
         num + 2
@@ -14,4 +16,5 @@ mod pymodtest {
             .map(|part| part.to_string())
             .collect()
     }
+    
 }
