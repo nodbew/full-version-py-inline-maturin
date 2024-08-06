@@ -22,7 +22,7 @@ def initialize_maturin_project(name: str, create = False) -> None:
     '''
     if create:
         run(f"maturin new -b pyo3 ./{name}")
-    else if not Path("./" + name).exists():
+    elif not Path("./" + name).exists():
         raise FileNotFoundError("The directory does not exist")
     
     # Edit pyproject.toml
