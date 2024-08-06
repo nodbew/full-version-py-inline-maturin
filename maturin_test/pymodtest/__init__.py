@@ -1,0 +1,1 @@
+import pymodtest as rust_mod
