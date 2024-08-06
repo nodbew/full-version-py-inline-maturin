@@ -13,6 +13,6 @@ fn split_string(s: &str) -> PyResult<Vec<String>> {
 #[pymodule]
 fn pymodtest(m: &Bound<'_, PyModule>) -> PyResult<()> {
     println!("{:?}", m.add_function(wrap_pyfunction!(add_two, m)?));
-    println!("{:?}", m.add_function(wrap_pyfunction!(split_string, m))?);
+    println!("{:?}", m.add_function(wrap_pyfunction!(split_string, m)?)?);
     Ok(())
 }
