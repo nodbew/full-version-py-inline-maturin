@@ -1,0 +1,33 @@
+project layout
+
+pure-rust:
+my-rust-project/
+├── Cargo.toml
+├── pyproject.toml  # required for maturin configuration
+└── src
+    ├── lib.rs 
+
+how to use: import my_rust_project
+
+
+rust py combined:
+my-rust-and-python-project
+├── src  # put python code in src folder
+│   └── my_project
+│       ├── __init__.py
+│       └── bar.py
+├── pyproject.toml
+├── README.md
+└── rust # put rust code in rust folder
+    |── Cargo.toml
+    └── src
+        └── lib.rs
+
+how to use: 
+"""
+[tool.maturin]
+module-name = "my_project._my_project"
+"""
+in pyproject.toml
+
+then from my_project import _my_project
