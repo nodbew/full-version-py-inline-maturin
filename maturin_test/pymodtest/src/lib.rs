@@ -12,7 +12,7 @@ fn split_string(s: &str) -> PyResult<Vec<String>> {
 
 #[pymodule]
 fn pymodtest(m: &Bound<'_, PyModule>) -> PyResult<()> {
-    m.add_function(wrap_pyfunction!(add_two, m)?)?;
+    m.add_function(wrap_pyfunction!(add_two, m)?);
     m.add_function(wrap_pyfunction!(split_string, m)?)?;
     Ok(())
 }
