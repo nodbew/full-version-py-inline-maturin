@@ -7,30 +7,7 @@ import toml
 def run(cmd: str, **kwargs) -> subprocess.CompletedProcess:
     return subprocess.run(cmd, shell = True, check = True, **kwargs)
 
-def create_maturin_project(name: str) -> None:
-    '''
-    Create a new maturin project with the desired name.
-    '''
-
-    if type(name) != str:
-        raise TypeError(f'The "name" argument must be a str instance, not {type(name)}')
-        
-    # Check overlappings
-    if Path('./' + name).is_dir():
-        raise FileExistsError(f"Directory {name} already exists; please choose another name")
-
-    # Install rust and maturin
-    run("curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y")
-    print('Successfully installed rust:')
-    run("rustup --version")
-    run("pip install -U maturin")
-
-    # Maturin new
-    run(f"maturin new --name {name} --bindings pyo3 ./{name}")
-    
-    return 
-    
-def initialize_maturin_project(name: str) -> None:
+def initialize_maturin_project(name: str, create = False) -> None:
     '''
     Edit pyproject.toml and Cargo.toml in the directory, and change the directory into a maturin project.
     
@@ -43,7 +20,9 @@ def initialize_maturin_project(name: str) -> None:
         - [lib]: 'crate-type' will be ['cdylib']
         - [dependencies]: 'pyo3' = { version = '0.22.0', features = ['extension-module'] }
     '''
-    if not Path("./" + name).is_dir():
+    if create:
+        run(f"maturin new ./{name}")
+    else if not Path("./" + name).exists():
         raise FileNotFoundError("The directory does not exist")
     
     # Edit pyproject.toml
@@ -99,6 +78,10 @@ name = {name}
     return
 
 def build_maturin_project(name: str) -> None:
+    """
+    Build a maturin project in the given name of directory.
+    Uses maturin build -> pip install pattern.
+    """
     if not isinstance(name, str):
         raise TypeError(f'The "name" argument must be a str, not {type(name)}')
 
@@ -114,3 +97,5 @@ def build_maturin_project(name: str) -> None:
     os.chdir('..')
 
     return 
+    
+
