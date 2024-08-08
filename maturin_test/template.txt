@@ -30,4 +30,6 @@ module-name = "my_project._my_project"
 """
 in pyproject.toml
 
-then from my_project import _my_project
+then 
+
+from my_project import _my_project
