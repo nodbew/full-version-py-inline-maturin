@@ -6,7 +6,7 @@ def test_create():
     from pathlib import Path
     
     py_inline_maturin.initialize_maturin_project("test_maturin_project", create = True)
-    assert Path("./test_maturin_project").is_dir():
+    assert Path("./test_maturin_project").is_dir()
     assert Path("./test_maturin_project/Cargo.toml").is_file()
     assert Path("./test_maturin_project/pyproject.toml").is_file()
     assert Path("./test_maturin_project/src").is_dir()
