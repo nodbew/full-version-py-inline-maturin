@@ -20,9 +20,10 @@ def initialize_maturin_project(name: str, create = False) -> None:
         - [lib]: 'crate-type' will be ['cdylib']
         - [dependencies]: 'pyo3' = { version = '0.22.0', features = ['extension-module'] }
     '''
+    
     if create:
         run(f"maturin new -b pyo3 ./{name}")
-    elif not Path("./" + name).exists():
+    elif not Path(f"./{name}").exists():
         raise FileNotFoundError("The directory does not exist")
     
     # Edit pyproject.toml
@@ -89,11 +90,10 @@ def build_maturin_project(name: str) -> None:
     if not Path('./' + str(name)).is_dir():
         raise FileNotFoundError(f"There is no directory named {name}")
     
-    # Develop
+    # build
     os.chdir('./' + str(name))
     run("maturin build --verbose")
-    for p in Path("./target/wheels").iterdir():
-        run(f"pip install {p}")
+    run("pip install ./target/wheels/*")
     os.chdir('..')
 
     return 
