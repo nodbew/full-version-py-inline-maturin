@@ -5,12 +5,12 @@ import py_inline_maturin
 def test_create():
     """Test creation of a project"""
     
-    py_inline_maturin.initialize_maturin_project("test_maturin_project", create = True)
-    assert Path("./test_maturin_project").is_dir()
-    assert Path("./test_maturin_project/Cargo.toml").is_file()
-    assert Path("./test_maturin_project/pyproject.toml").is_file()
-    assert Path("./test_maturin_project/src").is_dir()
-    assert Path("./test_maturin_project/src/lib.rs").is_file()
+    py_inline_maturin.initialize_maturin_project("something", create = True)
+    assert Path("./something").is_dir()
+    assert Path("./something/Cargo.toml").is_file()
+    assert Path("./something/pyproject.toml").is_file()
+    assert Path("./something/src").is_dir()
+    assert Path("./something/src/lib.rs").is_file()
     
     return
     
