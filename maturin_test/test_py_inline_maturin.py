@@ -1,9 +1,9 @@
+from pathlib import Path
+
 import py_inline_maturin
 
 def test_create():
     """Test creation of a project"""
-    
-    from pathlib import Path
     
     py_inline_maturin.initialize_maturin_project("test_maturin_project", create = True)
     assert Path("./test_maturin_project").is_dir()
