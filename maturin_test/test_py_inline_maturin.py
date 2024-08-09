@@ -32,6 +32,8 @@ use pyo3::prelude::*;
 
 #[pymodule]
 mod test_maturin_project {
+
+    use pyo3::prelude::*;
     
     #[pyfunction]
     fn subtract_two(n: i64) -> i64 {
