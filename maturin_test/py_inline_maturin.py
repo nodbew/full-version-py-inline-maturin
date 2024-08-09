@@ -96,10 +96,11 @@ def build_maturin_project(name: str) -> None:
         raise FileNotFoundError(f"There is no directory named {name}")
     
     # build
+    recent_working_dir = os.getcwd()
     os.chdir('./' + str(name))
     run("maturin build --verbose")
     run("pip install ./target/wheels/*")
-    os.chdir('..')
+    os.chdir(recent_working_dir)
 
     return 
     
