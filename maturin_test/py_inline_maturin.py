@@ -7,13 +7,15 @@ import toml
 def run(cmd: str, **kwargs) -> subprocess.CompletedProcess:
     return subprocess.run(cmd, shell = True, check = True, **kwargs)
 
+class InvalidConfigError(Exception):pass
+
 def initialize_maturin_project(path: str, create: bool = False, name: str = None) -> None:
     '''
     Edit pyproject.toml and Cargo.toml in the directory, and change the directory into a maturin project.
     
     The following elements of the pyproject.toml file will be forecefully changed:
-        - 'build-system' section: 'requires' will be 'maturin>=1.7, <2.0', 
-                                  'build-backend' will be 'maurin'
+        - 'build-system' section: 'requires' will be 'maturin>=1.7, <2.0' if omitted,
+                                  'build-backend' will be 'maurin' if omitted
         - 'project' section: 'features' will be ['pyo3/extension-module'] + other features if written.
                                   
     The following elements of the Cargo.toml file will be forecufully changed:
@@ -21,7 +23,7 @@ def initialize_maturin_project(path: str, create: bool = False, name: str = None
         - [dependencies]: 'pyo3' = { version = '0.22.0', features = ['extension-module'] }
     '''
 
-    # Nae defaults to the directory name
+    # Name defaults to the directory name
     if name is None:
         name = str(path)
     
@@ -51,6 +53,11 @@ dynamic = ["version"]
 requires = "maturin>=1.7, <2.0"
 build-backend = "maturin"
 ''')
+    # Check for invalid config files
+    if 'project' not in config:
+        raise InvalidConfigError('"project" section is required for pyproject.toml')
+
+    # Edit configurations
     if 'features' in config['project']:
         feats = config['project']['features']
         if 'pyo3/extension-module' not in feats:
@@ -58,9 +65,18 @@ build-backend = "maturin"
     else:
         config['project']['features'] = ['pyo3/extension-module']
 
+    if 'build-system' not in config:
+        config['build-system'] = {'requires' = 'maturin>=1.7, <2.0', 'build-backend' = 'maturin'}
+    else:
+        if 'requires' not in config['build-system']:
+            config['build-system']['requires'] = 'maturin>=1.7, <2.0'
+       if 'build-backend' not in config['build-system']:
+            config['build-system']['build-backend'] = 'maturin'
+
     with open(f'./{name}/pyproject.toml', 'w') as f:
         toml.dump(config, f)
-
+        
+    #
     # Edit Cargo.toml
     try:
         config = toml.load(f'./{name}/Cargo.toml')
@@ -74,7 +90,14 @@ edition = "2021"
 
 [lib]
 name = "{name}"
+
+[dependencies]
 ''')
+    # Check for required configurations
+    for req in ['package', 'lib', 'dependencies']:
+        if req not in config:
+            raise InvalidConfigError(f'{req} section is required for Cargo.toml')
+    
     config['lib']['crate-type'] = ['cdylib']
     config['dependencies']['pyo3'] =  { "version": "0.22.0", "features": ["extension-module"] }
 
