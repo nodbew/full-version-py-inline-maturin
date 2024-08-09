@@ -104,6 +104,13 @@ name = "{name}"
     with open(f'./{name}/Cargo.toml', 'w') as f:
         toml.dump(config, f)
 
+    # look for src directory
+    if Path('./{name}/src').is_dir():
+        if not Path('./{name}/src/lib.rs').is_file():
+            Path('./{name}/src/lib.rs').touch()
+    else:
+        Path('./{name}/src').mkdir()
+        Path('./{name}/src/lib.rs').touch()
     return
 
 def build_maturin_project(name: str) -> None:
