@@ -7,7 +7,7 @@ import toml
 def run(cmd: str, **kwargs) -> subprocess.CompletedProcess:
     return subprocess.run(cmd, shell = True, check = True, **kwargs)
 
-def initialize_maturin_project(name: str, create = False) -> None:
+def initialize_maturin_project(path: str, create: bool = False, name: str = None) -> None:
     '''
     Edit pyproject.toml and Cargo.toml in the directory, and change the directory into a maturin project.
     
@@ -20,11 +20,16 @@ def initialize_maturin_project(name: str, create = False) -> None:
         - [lib]: 'crate-type' will be ['cdylib']
         - [dependencies]: 'pyo3' = { version = '0.22.0', features = ['extension-module'] }
     '''
+
+    # Nae defaults to the directory name
+    if name is None:
+        name = str(path)
     
     if create:
-        run(f"maturin new -b pyo3 ./{name}")
-    elif not Path(f"./{name}").exists():
-        raise FileNotFoundError("The directory does not exist")
+        run(f"maturin new -b pyo3 ./{path}")
+    else:
+        if not Path(f"./{path}").exists():
+            raise FileNotFoundError(f"The directory('{Path('.').resolve()}') does not exist")
     
     # Edit pyproject.toml
     try:
@@ -33,7 +38,7 @@ def initialize_maturin_project(name: str, create = False) -> None:
         # If there is no pyproject.toml, autogenerate the content
         config = toml.loads(f'''\
 [project]
-name = {name}
+name = "{name}"
 requires-python = ">=3.12"
 classifiers = [
     "Programming Language :: Rust",
@@ -63,12 +68,12 @@ build-backend = "maturin"
         # Auto generation
         config = toml.loads(f'''\
 [package]
-name = {name}
+name = "{name}"
 version = "0.1.0"
 edition = "2021"
 
 [lib]
-name = {name}
+name = "{name}"
 ''')
     config['lib']['crate-type'] = ['cdylib']
     config['dependencies']['pyo3'] =  { "version": "0.22.0", "features": ["extension-module"] }
