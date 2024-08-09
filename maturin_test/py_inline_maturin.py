@@ -70,7 +70,7 @@ build-backend = "maturin"
     else:
         if 'requires' not in config['build-system']:
             config['build-system']['requires'] = 'maturin>=1.7, <2.0'
-       if 'build-backend' not in config['build-system']:
+        if 'build-backend' not in config['build-system']:
             config['build-system']['build-backend'] = 'maturin'
 
     with open(f'./{name}/pyproject.toml', 'w') as f:
