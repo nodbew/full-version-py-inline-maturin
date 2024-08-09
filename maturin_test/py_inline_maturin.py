@@ -66,7 +66,7 @@ build-backend = "maturin"
         config['project']['features'] = ['pyo3/extension-module']
 
     if 'build-system' not in config:
-        config['build-system'] = {'requires' = 'maturin>=1.7, <2.0', 'build-backend' = 'maturin'}
+        config['build-system'] = {'requires': 'maturin>=1.7, <2.0', 'build-backend': 'maturin'}
     else:
         if 'requires' not in config['build-system']:
             config['build-system']['requires'] = 'maturin>=1.7, <2.0'
