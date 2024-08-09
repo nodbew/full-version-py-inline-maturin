@@ -105,12 +105,12 @@ name = "{name}"
         toml.dump(config, f)
 
     # look for src directory
-    if Path('./{name}/src').is_dir():
-        if not Path('./{name}/src/lib.rs').is_file():
-            Path('./{name}/src/lib.rs').touch()
+    if Path(f'./{name}/src').is_dir():
+        if not Path(f'./{name}/src/lib.rs').is_file():
+            Path(f'./{name}/src/lib.rs').touch()
     else:
-        Path('./{name}/src').mkdir()
-        Path('./{name}/src/lib.rs').touch()
+        Path(f'./{name}/src').mkdir()
+        Path(f'./{name}/src/lib.rs').touch()
     return
 
 def build_maturin_project(name: str) -> None:
