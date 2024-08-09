@@ -1,5 +1,3 @@
-from pathlib import Path
-
 import py_inline_maturin
 
 def test_create():
