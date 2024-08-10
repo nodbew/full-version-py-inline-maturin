@@ -1,4 +1,4 @@
-def _edit_pyproject_toml(path: str, name: str) -> None:
+def edit_pyproject_toml(path: str, name: str) -> None:
     
     """
     The following elements of the pyproject.toml file will be forecefully changed:
@@ -52,7 +52,7 @@ build-backend = "maturin"
         
     return
     
-def _edit_cargo_toml(path: str, name: str) -> None:
+def edit_cargo_toml(path: str, name: str) -> None:
     
     """
     The following elements of the Cargo.toml file will be forecufully changed:
