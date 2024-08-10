@@ -32,7 +32,7 @@ def initialize_maturin_project(path: str | Path = None, create: bool = False, na
 
     # Edit configuration
     toml_util.edit_pyproject_toml(path = f"{path}/pyproject.toml", name = name)
-    toml_util.edit_cargo_toml(path = f"{path}/pyproject.toml", name = name)
+    toml_util.edit_cargo_toml(path = f"{path}/Cargo.toml", name = name)
 
     # look for src directory and lib.rs in it
     if Path(f'{path}/src').is_dir():
