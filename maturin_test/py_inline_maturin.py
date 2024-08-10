@@ -5,9 +5,6 @@ from pathlib import Path
 from . import toml_util
 
 
-class InvalidConfigError(Exception):pass
-    
-
 def run(cmd: str, **kwargs) -> subprocess.CompletedProcess:
     return subprocess.run(cmd, shell = True, check = True, **kwargs)
     
