@@ -7,10 +7,20 @@ class InvalidConfigError(Exception):pass
 def edit_pyproject_toml(path: str, name: str) -> None:
     
     """
+    
     The following elements of the pyproject.toml file will be forecefully changed:
         - 'build-system' section: 'requires' will be 'maturin>=1.7, <2.0' if omitted,
                                   'build-backend' will be 'maurin' if omitted
         - 'project' section: 'features' will be ['pyo3/extension-module'] + other features if written.
+        
+    Parameters:
+        path: A path to a pyproject.toml.
+        name: A name to set as a name of the project in pyproject.toml.
+    
+    Errors:
+        InvalidConfigError: Raised when pyproject.toml mosses a required configuration.
+        TomlDecodeError: Raised when the toml linrary fails to parse pyproject.toml.
+        
     """
     
     try:
@@ -61,9 +71,19 @@ build-backend = "maturin"
 def edit_cargo_toml(path: str, name: str) -> None:
     
     """
+    
     The following elements of the Cargo.toml file will be forecufully changed:
         - [lib]: 'crate-type' will be ['cdylib']
         - [dependencies]: 'pyo3' = { version = '0.22.0', features = ['extension-module'] }
+    
+    Parameters:
+        path: A path to a Cargo.toml.
+        name: A name to set as a name of the project in Cargo.toml.
+    
+    Errors:
+        InvalidConfigError: Raised when Cargo.toml mosses a required configuration.
+        TomlDecodeError: Raised when the toml linrary fails to parse Cargo.toml.
+    
     """
     
     try:
