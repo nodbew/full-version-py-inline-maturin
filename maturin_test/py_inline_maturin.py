@@ -64,31 +64,15 @@ build-backend = "maturin"
         toml.dump(config, f)
         
     return
-
-def initialize_maturin_project(path: str, create: bool = False, name: str = None) -> None:
-    '''
-    Edit pyproject.toml and Cargo.toml to the maturin project style.
     
-                                      
+def _edit_cargo_toml(path: str, name: str) -> None:
+    
+    """
     The following elements of the Cargo.toml file will be forecufully changed:
         - [lib]: 'crate-type' will be ['cdylib']
         - [dependencies]: 'pyo3' = { version = '0.22.0', features = ['extension-module'] }
-    '''
-
-    # Name defaults to the directory name
-    if name is None:
-        name = str(path)
+    """
     
-    if create:
-        run(f"maturin new -b pyo3 ./{path}")
-    else:
-        if not Path(f"./{path}").exists():
-            raise FileNotFoundError(f"The directory('{Path(f'./{path}').resolve()}') does not exist")
-
-    _edit_pyproject_toml(path = f"./{path}/pyproject.toml", name = name)
-
-    #
-    # Edit Cargo.toml
     try:
         config = toml.load(f'./{name}/Cargo.toml')
     except FileNotFoundError:
@@ -114,14 +98,34 @@ name = "{name}"
 
     with open(f'./{name}/Cargo.toml', 'w') as f:
         toml.dump(config, f)
+        
+    return
 
-    # look for src directory
+def initialize_maturin_project(path: str, create: bool = False, name: str = None) -> None:
+    
+    '''Edit pyproject.toml and Cargo.toml to the maturin project style.'''
+
+    # Name defaults to the directory name
+    if name is None:
+        name = list(str(path).split("/"))[-1] # last directory in the path
+    
+    if create:
+        run(f"maturin new -b pyo3 ./{path}")
+    else:
+        if not Path(f"./{path}").exists():
+            raise FileNotFoundError(f"The directory('{Path(f'./{path}').resolve()}') does not exist")
+
+    _edit_pyproject_toml(path = f"./{path}/pyproject.toml", name = name)
+    _edit_cargo_toml(path = f"./{path}/pyproject.toml", name = name)
+
+    # look for src directory and lib.rs in it
     if Path(f'./{name}/src').is_dir():
         if not Path(f'./{name}/src/lib.rs').is_file():
             Path(f'./{name}/src/lib.rs').touch()
     else:
         Path(f'./{name}/src').mkdir()
         Path(f'./{name}/src/lib.rs').touch()
+        
     return
 
 def build_maturin_project(name: str) -> None:
