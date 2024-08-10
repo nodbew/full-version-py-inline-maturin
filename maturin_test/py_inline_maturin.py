@@ -1,6 +1,7 @@
 import subprocess
 import os
 from pathlib import Path
+from typing import Literal
 
 import toml_util
 
@@ -9,7 +10,12 @@ def run(cmd: str, **kwargs) -> subprocess.CompletedProcess:
     return subprocess.run(cmd, shell = True, check = True, **kwargs)
     
 
-def initialize_maturin_project(path: str | Path = None, create: bool = False, name: str = None) -> None:
+def initialize_maturin_project(
+        path: str | Path = None, 
+        create: bool = False, 
+        name: str = None,
+        mode: Literal["r", "rp"] = "r",
+    ) -> None:
     
     '''Edit pyproject.toml and Cargo.toml to the maturin project style.'''
 
