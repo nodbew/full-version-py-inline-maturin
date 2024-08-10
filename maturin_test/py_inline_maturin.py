@@ -4,40 +4,26 @@ from pathlib import Path
 
 import toml
 
-def run(cmd: str, **kwargs) -> subprocess.CompletedProcess:
-    return subprocess.run(cmd, shell = True, check = True, **kwargs)
 
 class InvalidConfigError(Exception):pass
-
-def initialize_maturin_project(path: str, create: bool = False, name: str = None) -> None:
-    '''
-    Edit pyproject.toml and Cargo.toml in the directory, and change the directory into a maturin project.
     
+
+def run(cmd: str, **kwargs) -> subprocess.CompletedProcess:
+    return subprocess.run(cmd, shell = True, check = True, **kwargs)
+    
+def edit_pyproject_toml(path: str, name: str) -> None:
+    
+    """
     The following elements of the pyproject.toml file will be forecefully changed:
         - 'build-system' section: 'requires' will be 'maturin>=1.7, <2.0' if omitted,
                                   'build-backend' will be 'maurin' if omitted
         - 'project' section: 'features' will be ['pyo3/extension-module'] + other features if written.
-                                  
-    The following elements of the Cargo.toml file will be forecufully changed:
-        - [lib]: 'crate-type' will be ['cdylib']
-        - [dependencies]: 'pyo3' = { version = '0.22.0', features = ['extension-module'] }
-    '''
-
-    # Name defaults to the directory name
-    if name is None:
-        name = str(path)
+    """
     
-    if create:
-        run(f"maturin new -b pyo3 ./{path}")
-    else:
-        if not Path(f"./{path}").exists():
-            raise FileNotFoundError(f"The directory('{Path('.').resolve()}') does not exist")
-    
-    # Edit pyproject.toml
     try:
-        config = toml.load(f'./{name}/pyproject.toml')
+        config = toml.load(path)
     except FileNotFoundError:
-        # If there is no pyproject.toml, autogenerate the content
+        # If there is no pyproject.toml, auto-generate the content
         config = toml.loads(f'''\
 [project]
 name = "{name}"
@@ -53,6 +39,7 @@ dynamic = ["version"]
 requires = "maturin>=1.7, <2.0"
 build-backend = "maturin"
 ''')
+
     # Check for invalid config files
     if 'project' not in config:
         raise InvalidConfigError('"project" section is required for pyproject.toml')
@@ -73,9 +60,33 @@ build-backend = "maturin"
         if 'build-backend' not in config['build-system']:
             config['build-system']['build-backend'] = 'maturin'
 
-    with open(f'./{name}/pyproject.toml', 'w') as f:
+    with open(path, 'w') as f:
         toml.dump(config, f)
         
+    return
+
+def initialize_maturin_project(path: str, create: bool = False, name: str = None) -> None:
+    '''
+    Edit pyproject.toml and Cargo.toml to the maturin project style.
+    
+                                      
+    The following elements of the Cargo.toml file will be forecufully changed:
+        - [lib]: 'crate-type' will be ['cdylib']
+        - [dependencies]: 'pyo3' = { version = '0.22.0', features = ['extension-module'] }
+    '''
+
+    # Name defaults to the directory name
+    if name is None:
+        name = str(path)
+    
+    if create:
+        run(f"maturin new -b pyo3 ./{path}")
+    else:
+        if not Path(f"./{path}").exists():
+            raise FileNotFoundError(f"The directory('{Path(f'./{path}').resolve()}') does not exist")
+
+    edit_pyproject_toml(path = "./{path}/pyproject.toml", name = name)
+
     #
     # Edit Cargo.toml
     try:
