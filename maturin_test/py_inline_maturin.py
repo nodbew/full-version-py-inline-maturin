@@ -11,7 +11,7 @@ class InvalidConfigError(Exception):pass
 def run(cmd: str, **kwargs) -> subprocess.CompletedProcess:
     return subprocess.run(cmd, shell = True, check = True, **kwargs)
     
-def edit_pyproject_toml(path: str, name: str) -> None:
+def _edit_pyproject_toml(path: str, name: str) -> None:
     
     """
     The following elements of the pyproject.toml file will be forecefully changed:
@@ -85,7 +85,7 @@ def initialize_maturin_project(path: str, create: bool = False, name: str = None
         if not Path(f"./{path}").exists():
             raise FileNotFoundError(f"The directory('{Path(f'./{path}').resolve()}') does not exist")
 
-    edit_pyproject_toml(path = "./{path}/pyproject.toml", name = name)
+    _edit_pyproject_toml(path = f"./{path}/pyproject.toml", name = name)
 
     #
     # Edit Cargo.toml
