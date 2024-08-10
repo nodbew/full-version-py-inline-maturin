@@ -47,17 +47,15 @@ def initialize_maturin_project(path: str | Path = None, create: bool = False, na
         
     return
 
-def build_maturin_project(name: str) -> None:
+def build_maturin_project(path: str | Path) -> None:
     """
     Build a maturin project in the given name of directory.
     Uses maturin build -> pip install pattern.
     """
-    if not isinstance(name, str):
-        raise TypeError(f'The "name" argument must be a str, not {type(name)}')
-
+    
     # Search for the directory under the current directory
-    if not Path('./' + str(name)).is_dir():
-        raise FileNotFoundError(f"There is no directory named {name}")
+    if not Path(str(path)).is_dir():
+        raise FileNotFoundError(f"There is no directory on {Path(str(path)).resolve()}")
     
     # build
     recent_working_dir = os.getcwd()
