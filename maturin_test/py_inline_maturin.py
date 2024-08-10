@@ -2,7 +2,7 @@ import subprocess
 import os
 from pathlib import Path
 
-from . import toml_util
+import toml_util
 
 
 def run(cmd: str, **kwargs) -> subprocess.CompletedProcess:
