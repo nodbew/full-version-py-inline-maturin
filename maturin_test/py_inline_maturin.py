@@ -17,7 +17,26 @@ def initialize_maturin_project(
         mode: Literal["r", "rp"] = "r",
     ) -> None:
     
-    '''Edit pyproject.toml and Cargo.toml to the maturin project style.'''
+    '''
+    
+    Edit pyproject.toml and Cargo.toml to the maturin project style.
+    
+    Parameters:
+        path: A path to the project directory. If omitted, defaults to "./{name}".
+        create: Whether to create a new project directory or not.
+        name: A name of the project. If omitted, defaults to the deepest directory's name in the path argument.
+        mode: A layout of the project. 
+              "r" stands for a pure-Rust project, and "rp" stands for a Rust-Python combined project.
+            
+    Errors: 
+        ValueError: When both path and name arguments are omitted.
+        CalledProcessError: A general exception that is raised when maturin fails to create a new project on the given directory.
+                            A common cause is that the directory already exists.
+        FileNotFoundError: When there is no directory in the path, and create argument is set to false.
+        InvalidConfigError: Raised when a required setting, such as "project" section in pyproject.toml, is missing.
+        TomlDecodeError: A general exception raised when the toml library fails to analyze either pyproject.toml or Cargo.toml.
+        
+    '''
 
     # name and path defaults to each other
     if path is None:
@@ -31,9 +50,12 @@ def initialize_maturin_project(
     
     # create or look for the directory
     if create:
-        run(f"maturin new -b pyo3 {path}")
+        try:
+            run(f"maturin new -b pyo3 --name {name} {path}")
+        except subprocess.CalledProcessError as e:
+            raise subprocess.CalledProcessError(f"Maturin failed to create a new project on the given directory. \nPerhaps it already exists? \nCaptured stdere call: \n{e.output}")
     else:
-        if not Path(str(path)).exists():
+        if not Path(str(path)).is_dir():
             raise FileNotFoundError(f"The directory('{Path(str(path)).resolve()}') does not exist")
 
     # Edit configuration
@@ -50,10 +72,22 @@ def initialize_maturin_project(
         
     return
 
-def build_maturin_project(path: str | Path) -> None:
+def build_maturin_project(path: str | Path, release = False) -> None:
+    
     """
+    
     Build a maturin project in the given name of directory.
     Uses maturin build -> pip install pattern.
+    
+    Parameters:
+        path: A str or a Path object that represents the project directory.
+        release: Whether to use "--release" option when building.
+        
+    Errors:
+        FileNotFoundError: Raised when there is no directory in the given path.
+        CalledProcessError: Raised when maturin fails to build the project.
+        ImportError: Raised when maturin does succeed to build the project, but pip fails to install the built wheels.
+        
     """
     
     # Search for the directory under the current directory
@@ -63,10 +97,21 @@ def build_maturin_project(path: str | Path) -> None:
     # build
     recent_working_dir = os.getcwd()
     os.chdir(str(path))
-    run("maturin build --verbose")
-    run("pip install ./target/wheels/*")
+    try:
+        
+        if release:
+            run("maturin build --release")
+        else:
+            run("maturin build")
+            
+    except subprocess.CalledProcessError as e:
+        raise subprocess.CalledProcessError(f"Maturin failed to build the project. \nPerhaps you forgot to initialize it? \nCaptured stderr call: \n{e.output}")
+        
+    try:
+        run("pip install ./target/wheels/*")
+    except subprocess.CalledProcessError as e:
+        raise ImportError(f"Something went wrong when installing the wheel. \nCaptured stderr call: \n{e.output}")
+        
     os.chdir(recent_working_dir)
 
     return 
-    
-
