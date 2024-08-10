@@ -1,3 +1,9 @@
+import toml
+
+
+class InvalidConfigError(Exception):pass
+
+
 def edit_pyproject_toml(path: str, name: str) -> None:
     
     """
