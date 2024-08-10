@@ -2,7 +2,7 @@ import subprocess
 import os
 from pathlib import Path
 
-import toml
+from . import toml_util
 
 
 class InvalidConfigError(Exception):pass
@@ -26,8 +26,8 @@ def initialize_maturin_project(path: str, create: bool = False, name: str = None
         if not Path(f"./{path}").exists():
             raise FileNotFoundError(f"The directory('{Path(f'./{path}').resolve()}') does not exist")
 
-    _edit_pyproject_toml(path = f"./{path}/pyproject.toml", name = name)
-    _edit_cargo_toml(path = f"./{path}/pyproject.toml", name = name)
+    toml_util.edit_pyproject_toml(path = f"./{path}/pyproject.toml", name = name)
+    toml_util.edit_cargo_toml(path = f"./{path}/pyproject.toml", name = name)
 
     # look for src directory and lib.rs in it
     if Path(f'./{name}/src').is_dir():
