@@ -67,7 +67,7 @@ def edit_cargo_toml(path: str, name: str) -> None:
     """
     
     try:
-        config = toml.load(f'./{name}/Cargo.toml')
+        config = toml.load(path)
     except FileNotFoundError:
         # Auto generation
         config = toml.loads(f'''\
@@ -89,7 +89,7 @@ name = "{name}"
     config['lib']['crate-type'] = ['cdylib']
     config['dependencies']['pyo3'] =  { "version": "0.22.0", "features": ["extension-module"] }
 
-    with open(f'./{name}/Cargo.toml', 'w') as f:
+    with open(path, 'w') as f:
         toml.dump(config, f)
         
     return
