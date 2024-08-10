@@ -56,7 +56,7 @@ def build_maturin_project(path: str | Path) -> None:
     
     # build
     recent_working_dir = os.getcwd()
-    os.chdir('./' + str(name))
+    os.chdir(str(path))
     run("maturin build --verbose")
     run("pip install ./target/wheels/*")
     os.chdir(recent_working_dir)
